@@ -30,8 +30,10 @@ const SAMPLE_FLASHCARDS = [
 function App() {
   const [flashcards, setFlashcards] = useState(SAMPLE_FLASHCARDS); 
   return (
+    <>
+      <h1> Flash Card Generator For Jocelyn</h1>
       <FlashcardList flashcards={flashcards} />
-    
+    </>
   );
 }
 
