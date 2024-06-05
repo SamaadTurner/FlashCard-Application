@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import './App.css';
 import FlashcardList from '../components/FlashcardList';
+import '../styling/App.css';
 
 const SAMPLE_FLASHCARDS = [
   {
@@ -16,13 +16,13 @@ const SAMPLE_FLASHCARDS = [
   },
   {
     id: 2,
-    question: 'What is 3 * 3?',
-    answer: '9',
+    question: 'Question 2?',
+    answer: 'Answer',
     options: [
-      '3',
-      '6',
-      '9',
-      '12'
+      'Answer',
+      'Answer 1',
+      'Answer 2',
+      'Answer 3'
     ]
   },
 ];
@@ -31,7 +31,6 @@ function App() {
   const [flashcards, setFlashcards] = useState(SAMPLE_FLASHCARDS); 
   return (
     <>
-      <h1> Flash Card Generator For Jocelyn</h1>
       <FlashcardList flashcards={flashcards} />
     </>
   );
