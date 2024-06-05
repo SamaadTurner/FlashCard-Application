@@ -1,23 +1,26 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
+import { Card } from 'react-bootstrap';
+import '../styling/App.css';
 
-export default function Flashcard({ flashcard }) {
+function Flashcard({ flashcard }) {
   const [flip, setFlip] = useState(false);
 
   return (
-    <div 
-      className={`card ${flip ? 'flip' : ''}`} 
-      onClick={() => setFlip(!flip)}
-      >
+    <div className="card-container" onClick={() => setFlip(!flip)}>
+      <div className={`card ${flip ? 'flip' : ''}`}>
         <div className="front">
-          {flashcard.question}
-          <div className="flashcard-options">
-            {flashcard.options.map(option => {
-              return <div className="flashcard-option"> {option}</div>
-            })}
-          </div>
+          <Card.Body className="d-flex justify-content-center align-items-center">
+            <Card.Text>Question: {flashcard.question}</Card.Text>
+          </Card.Body>
         </div>
-        <div className='back'>{flashcard.answer}</div>
+        <div className="back">
+          <Card.Body className="d-flex justify-content-center align-items-center">
+            <Card.Text>Answer: {flashcard.answer}</Card.Text>
+          </Card.Body>
+        </div>
+      </div>
     </div>
   );
 }
+
+export default Flashcard;
