@@ -5,7 +5,7 @@ import '../styling/App.css';
 function Flashcard({ flashcard, markIncorrect }) {
   const [flip, setFlip] = useState(false);
   const handleIncorrect = (e) => {
-    e.stopPropagation(); // this took me awhile to figure out. This prevents card from flipping when incorrect button is clicked
+    e.stopPropagation(); // Prevent card flipping when button is clicked
     markIncorrect(flashcard.id);
   };
 
@@ -17,7 +17,7 @@ function Flashcard({ flashcard, markIncorrect }) {
         </Card.Text>
         {flip && (
           <Button variant="danger" className="mt-2" onClick={handleIncorrect}>
-            Incorrect?
+            Incorrect
           </Button>
         )}
       </Card.Body>
