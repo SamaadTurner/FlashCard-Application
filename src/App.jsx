@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useAuth0 } from '@auth0/auth0-react';
 import Flashcard from '../components/Flashcard';
 import FlashcardForm from '../components/FlashcardForm';
 import { Button, Alert, Tabs, Tab, Container, Form } from 'react-bootstrap';
@@ -6,6 +7,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import '../styling/App.css';
 
 function App() {
+  const { loginWithRedirect, logout, user, isAuthenticated } = useAuth0();
   const [flashcards, setFlashcards] = useState([]);
   const [reviewMessage, setReviewMessage] = useState('');
   const [selectedChapter, setSelectedChapter] = useState('');
@@ -108,7 +110,15 @@ function App() {
 
   return (
     <Container className="mt-5">
-      <h1>Flash Card Generator For Jocelyn</h1>
+      <h1>Flash Card Generator For {isAuthenticated ? user.name : 'Jocelyn'}</h1>
+      <div className="auth-buttons">
+        {!isAuthenticated && (
+          <Button onClick={() => loginWithRedirect()}>Log In</Button>
+        )}
+        {isAuthenticated && (
+          <Button onClick={() => logout({ returnTo: window.location.origin })}>Log Out</Button>
+        )}
+      </div>
       <Tabs defaultActiveKey="add" id="flashcard-tabs" className="mb-3">
         <Tab eventKey="add" title="Add Flashcard">
           <FlashcardForm addFlashcard={addFlashcard} chapters={chapters} />

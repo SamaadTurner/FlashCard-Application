@@ -1,11 +1,18 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import App from './App.jsx'
-import 'bootstrap/dist/css/bootstrap.min.css';
+import React from 'react';
+import { createRoot } from 'react-dom/client';
+import App from './App';
+import { BrowserRouter as Router } from 'react-router-dom';
+import AuthProvider from './Auth0ProviderWithHistory';
 
+const container = document.getElementById('root');
+const root = createRoot(container); 
 
-ReactDOM.createRoot(document.getElementById('root')).render(
+root.render(
+  <Router>
   <React.StrictMode>
+    <AuthProvider>
     <App />
-  </React.StrictMode>,
-)
+    </AuthProvider>
+  </React.StrictMode>
+  </Router>
+);
