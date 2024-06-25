@@ -5,6 +5,7 @@ import { BrowserRouter as Router, useNavigate } from 'react-router-dom'; // Impo
 const Auth0ProviderWithHistory = ({ children }) => {
   const domain = import.meta.env.VITE_REACT_APP_AUTH0_DOMAIN;
   const clientId = import.meta.env.VITE_REACT_APP_CLIENT_ID;
+  const audience = import.meta.env.VITE_REACT_APP_AUDIENCE;
   
   const navigate = useNavigate(); 
   const onRedirectCallback = (appState) => {
@@ -18,7 +19,8 @@ const Auth0ProviderWithHistory = ({ children }) => {
         clientId={clientId}
         authorizationParams={{
           redirect_uri: window.location.origin,
-          scope: "openid profile email"
+          scope: "openid profile email",
+          audience: audience,
         }}
         onRedirectCallback={onRedirectCallback}
       >
