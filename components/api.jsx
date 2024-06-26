@@ -5,7 +5,7 @@ import FlashcardForm from './FlashcardForm';
 import { Button, Alert, Tabs, Tab, Container, Form } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../styling/App.css';
-import api from '../api';
+
 
 function App() {
   const { loginWithRedirect, logout, user, isAuthenticated } = useAuth0();

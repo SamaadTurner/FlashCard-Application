@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth0 } from '@auth0/auth0-react'; 
-import Flashcard from './Flashcard'; 
-import FlashcardForm from './FlashcardForm'; 
+import Flashcard from '../components/Flashcard'; 
+import FlashcardForm from '../components/FlashcardForm'; 
 import { Button, Alert, Tabs, Tab, Container, Form } from 'react-bootstrap'; 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../styling/App.css';
-import api from '../api'; 
+import api from '../components/api.jsx';
 
 function App() {
   const { loginWithRedirect, logout, user, isAuthenticated } = useAuth0(); // Auth0 functions and states
