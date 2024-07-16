@@ -3,6 +3,7 @@ import { useAuth0 } from '@auth0/auth0-react';
 import Flashcard from './Flashcard';
 import FlashcardForm from './FlashcardForm';
 import { Button, Alert, Tabs, Tab, Container, Form } from 'react-bootstrap';
+import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../styling/App.css';
 
@@ -30,6 +31,12 @@ function App() {
     'Chapter 8'
   ];
 
+  const api = axios.create({
+    baseURL: 'http://localhost:5173/api',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
   // Fetch flashcards from the backend
   useEffect(() => {
     const fetchFlashcards = async () => {

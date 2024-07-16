@@ -161,7 +161,7 @@ function App() {
 
   return (
     <Container className="mt-5">
-      <h1>Flash Card Generator For {isAuthenticated ? user.name : ''}</h1>
+      <h1>Flash Card Generator {isAuthenticated ? user.name : ''}</h1>
       <div className="auth-buttons">
         {!isAuthenticated && (
           <Button onClick={() => loginWithRedirect()}>Log In</Button>
