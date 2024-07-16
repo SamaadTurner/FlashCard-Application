@@ -51,21 +51,21 @@ function App() {
     fetchFlashcards();
   }, []);
 
-  // Add a new flashcard
-  const addFlashcard = async (question, answer, chapter) => {
-    const newFlashcard = {
-      question,
-      answer,
-      chapter,
-      gotWrong: null,
-    };
-    try {
-      const response = await api.post('/flashcards', newFlashcard);
-      setFlashcards([...flashcards, response.data]);
-    } catch (error) {
-      console.error('Error adding flashcard:', error);
-    }
-  };
+  // // Add a new flashcard
+  // const addFlashcard = async (question, answer, chapter) => {
+  //   const newFlashcard = {
+  //     question,
+  //     answer,
+  //     chapter,
+  //     gotWrong: null,
+  //   };
+  //   try {
+  //     const response = await api.post('/flashcards', newFlashcard);
+  //     setFlashcards([...flashcards, response.data]);
+  //   } catch (error) {
+  //     console.error('Error adding flashcard:', error);
+  //   }
+  // };
 
   // Update an existing flashcard
   const updateFlashcard = async (id, updates) => {
