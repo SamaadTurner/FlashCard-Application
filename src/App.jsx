@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth0 } from '@auth0/auth0-react'; 
 import Flashcard from '../components/Flashcard'; 
+import axios from 'axios';
 import FlashcardForm from '../components/FlashcardForm'; 
 import { Button, Alert, Tabs, Tab, Container, Form } from 'react-bootstrap'; 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../styling/App.css';
-import api from '../components/api.jsx';
+// import api from '../components/api.jsx';
 
 function App() {
   const { loginWithRedirect, logout, user, isAuthenticated } = useAuth0(); // Auth0 functions and states
@@ -18,6 +19,27 @@ function App() {
   const [correctCards, setCorrectCards] = useState([]);  
   const [incorrectCards, setIncorrectCards] = useState([]); 
   const [showEndMessage, setShowEndMessage] = useState(false);  
+
+  
+  const api = axios.create({
+    baseURL: 'http://localhost:5174/api',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+  // Fetch flashcards from the backend
+  useEffect(() => {
+    const fetchFlashcards = async () => {
+      try {
+        const response = await api.get('/flashcards');
+        setFlashcards(response.data);
+      } catch (error) {
+        console.error('Error fetching flashcards:', error);
+      }
+    };
+
+    fetchFlashcards();
+  }, []);
 
   // Need to make this dynamic *****************************************
   const chapters = [
@@ -36,6 +58,7 @@ function App() {
     const fetchFlashcards = async () => {
       try {
         const response = await api.get('/flashcards');
+        console.log(response);
         setFlashcards(response.data); // Set flashcards state with response data
       } catch (error) {
         console.error('Error fetching flashcards:', error);
@@ -117,6 +140,7 @@ function App() {
   };
 
   // Filter flashcards based on selected chapter and incorrect status
+  console.log(flashcards);
   const filteredFlashcards = flashcards.filter(flashcard =>
     (!selectedChapter || flashcard.chapter === selectedChapter) &&
     (!filter || flashcard.gotWrong)
