@@ -7,6 +7,12 @@ import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../styling/App.css';
 
+const api = axios.create({
+  baseURL: 'http://localhost:5173/api',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+});
 
 function App() {
   const { loginWithRedirect, logout, user, isAuthenticated } = useAuth0();
@@ -31,18 +37,11 @@ function App() {
     'Chapter 8'
   ];
 
-  const api = axios.create({
-    baseURL: 'http://localhost:5173/api',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  });
-  // Fetch flashcards from the backend
   useEffect(() => {
     const fetchFlashcards = async () => {
       try {
         const response = await api.get('/flashcards');
-        setFlashcards(response.data);
+        setFlashcards(Array.isArray(response.data) ? response.data : []);
       } catch (error) {
         console.error('Error fetching flashcards:', error);
       }
@@ -50,6 +49,16 @@ function App() {
 
     fetchFlashcards();
   }, []);
+
+  // Define addFlashcard function
+  const addFlashcard = async (flashcard) => {
+    try {
+      const response = await api.post('/flashcards', flashcard);
+      setFlashcards([...flashcards, response.data]);
+    } catch (error) {
+      console.error('Error adding flashcard:', error);
+    }
+  };
 
   // Update an existing flashcard
   const updateFlashcard = async (id, updates) => {
