@@ -1,35 +1,46 @@
-import React, { useState, useEffect } from 'react';
-import FlashcardForm from './FlashcardForm';
-import FlashcardList from './FlashcardList';
-import { fetchFlashcards } from './api';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import Flashcard from './Flashcard';
 
-const App = () => {
+const FlashcardList = () => {
   const [flashcards, setFlashcards] = useState([]);
 
   useEffect(() => {
-    const getFlashcards = async () => {
+    const fetchFlashcards = async () => {
       try {
-        const flashcards = await fetchFlashcards();
-        setFlashcards(flashcards);
+        const response = await axios.get('/api/flashcards'); // Make sure this URL is correct
+        console.log('Fetched flashcards:', response.data); // Log fetched data
+        setFlashcards(response.data);
       } catch (error) {
         console.error('Error fetching flashcards:', error);
       }
     };
 
-    getFlashcards();
+    fetchFlashcards();
   }, []);
 
-  const addFlashcard = (flashcard) => {
-    setFlashcards([...flashcards, flashcard]);
+  const markIncorrect = (id) => {
+    // Implement the logic to handle incorrect answer marking
+    console.log(`Marked flashcard ${id} as incorrect`);
+  };
+
+  const markCorrect = (id) => {
+    // Implement the logic to handle correct answer marking
+    console.log(`Marked flashcard ${id} as correct`);
   };
 
   return (
     <div>
-      <h1>Flashcard App</h1>
-      <FlashcardForm onAdd={addFlashcard} />
-      <FlashcardList flashcards={flashcards} />
+      <h2>Generated Flash Cards</h2>
+      {flashcards.length === 0 ? (
+        <p>No flashcards available.</p>
+      ) : (
+        flashcards.map(flashcard => (
+          <Flashcard key={flashcard.FlashcardID} flashcard={flashcard} markIncorrect={markIncorrect} markCorrect={markCorrect} />
+        ))
+      )}
     </div>
   );
 };
 
-export default App;
+export default FlashcardList;

@@ -7,19 +7,19 @@ function Flashcard({ flashcard, markIncorrect, markCorrect }) {
 
   const handleIncorrect = (e) => {
     e.stopPropagation();
-    markIncorrect(flashcard.id);
+    markIncorrect(flashcard.FlashcardID);
   };
 
   const handleCorrect = (e) => {
     e.stopPropagation();
-    markCorrect();
+    markCorrect(flashcard.FlashcardID);
   };
 
   return (
     <Card onClick={() => setFlip(!flip)} style={{ cursor: 'pointer', margin: '1rem', maxWidth: '400px' }}>
       <Card.Body className="d-flex justify-content-center align-items-center flex-column">
         <Card.Text>
-          {flip ? `A: ${flashcard.answer}` : `Q: ${flashcard.question}`}
+          {flip ? `A: ${flashcard.AnswerText}` : `Q: ${flashcard.QuestionText}`}
         </Card.Text>
         {flip && (
           <div className="mt-2">
