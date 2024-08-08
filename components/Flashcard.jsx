@@ -15,6 +15,8 @@ function Flashcard({ flashcard, markIncorrect, markCorrect }) {
     markCorrect(flashcard.FlashcardID);
   };
 
+  console.log('Rendering Flashcard component:', flashcard);
+
   return (
     <Card onClick={() => setFlip(!flip)} style={{ cursor: 'pointer', margin: '1rem', maxWidth: '400px' }}>
       <Card.Body className="d-flex justify-content-center align-items-center flex-column">

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Flashcard from './Flashcard';
 
@@ -8,9 +8,10 @@ const FlashcardList = () => {
   useEffect(() => {
     const fetchFlashcards = async () => {
       try {
-        const response = await axios.get('/api/flashcards'); // Make sure this URL is correct
-        console.log('Fetched flashcards:', response.data); // Log fetched data
-        setFlashcards(response.data);
+        const response = await axios.get('/api/flashcards');
+        const data = response.data;
+        console.log('Fetched flashcards:', data);
+        setFlashcards(data);
       } catch (error) {
         console.error('Error fetching flashcards:', error);
       }
@@ -20,24 +21,39 @@ const FlashcardList = () => {
   }, []);
 
   const markIncorrect = (id) => {
-    // Implement the logic to handle incorrect answer marking
-    console.log(`Marked flashcard ${id} as incorrect`);
+    setFlashcards((prevFlashcards) =>
+      prevFlashcards.map((flashcard) =>
+        flashcard.FlashcardID === id ? { ...flashcard, GotWrong: true } : flashcard
+      )
+    );
   };
 
   const markCorrect = (id) => {
-    // Implement the logic to handle correct answer marking
-    console.log(`Marked flashcard ${id} as correct`);
+    setFlashcards((prevFlashcards) =>
+      prevFlashcards.map((flashcard) =>
+        flashcard.FlashcardID === id ? { ...flashcard, GotWrong: false } : flashcard
+      )
+    );
   };
+
+  console.log('Rendering FlashcardList with flashcards:', flashcards);
 
   return (
     <div>
-      <h2>Generated Flash Cards</h2>
       {flashcards.length === 0 ? (
         <p>No flashcards available.</p>
       ) : (
-        flashcards.map(flashcard => (
-          <Flashcard key={flashcard.FlashcardID} flashcard={flashcard} markIncorrect={markIncorrect} markCorrect={markCorrect} />
-        ))
+        flashcards.map((flashcard) => {
+          console.log('Rendering flashcard in list:', flashcard);
+          return (
+            <Flashcard
+              key={flashcard.FlashcardID}
+              flashcard={flashcard}
+              markIncorrect={markIncorrect}
+              markCorrect={markCorrect}
+            />
+          );
+        })
       )}
     </div>
   );
