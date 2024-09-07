@@ -5,18 +5,18 @@ import Flashcard from './Flashcard';
 const FlashcardList = () => {
   const [flashcards, setFlashcards] = useState([]);
 
-  useEffect(() => {
-    const fetchFlashcards = async () => {
-      try {
-        const response = await axios.get('/api/flashcards');
-        const data = response.data;
-        console.log('Fetched flashcards:', data);
-        setFlashcards(data);
-      } catch (error) {
-        console.error('Error fetching flashcards:', error);
-      }
-    };
+  const fetchFlashcards = async () => {
+    try {
+      const response = await axios.get('/api/flashcards');
+      const data = response.data;
+      console.log('Fetched flashcards:', data);
+      setFlashcards(data);
+    } catch (error) {
+      console.error('Error fetching flashcards:', error);
+    }
+  };
 
+  useEffect(() => {
     fetchFlashcards();
   }, []);
 
@@ -34,6 +34,15 @@ const FlashcardList = () => {
         flashcard.FlashcardID === id ? { ...flashcard, GotWrong: false } : flashcard
       )
     );
+  };
+
+  const addFlashcard = async (newFlashcard) => {
+    try {
+      await axios.post('/api/flashcards', newFlashcard);
+      await fetchFlashcards(); // Ensure this happens after the flashcard is added
+    } catch (error) {
+      console.error('Error adding flashcard:', error);
+    }
   };
 
   console.log('Rendering FlashcardList with flashcards:', flashcards);
@@ -55,6 +64,7 @@ const FlashcardList = () => {
           );
         })
       )}
+      {/* AddFlashcard component here, passing addFlashcard as a prop */}
     </div>
   );
 };

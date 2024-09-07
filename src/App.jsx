@@ -99,6 +99,8 @@ function App() {
   // Function to update an existing flashcard
   const updateFlashcard = async (id, updates) => {
     try {
+      console.log('updates:', {updates,id});
+
       const response = await api.put(`/flashcards/${id}`, updates);
       setFlashcards(flashcards.map(f => (f.id === id ? response.data : f))); // Will update the flashcard in state
     } catch (error) {
@@ -119,8 +121,8 @@ function App() {
   // Mark a flashcard as incorrect
   const markIncorrect = (id) => {
     const card = flashcards.find(f => f.id === id);
-    updateFlashcard(id, { ...card, gotWrong: true }); // Update the card's `gotWrong` property
-    setIncorrectCards([...incorrectCards, card]); // Adds to the incorrect cards list
+    updateFlashcard(id, { ...card, GotWrong: true }); // Update the card's `gotWrong` property
+    // setIncorrectCards([...incorrectCards, card]); // Adds to the incorrect cards list
     setFeedbackMessage('Marked as incorrect.');
     setTimeout(() => {
       setFeedbackMessage(''); // Clear feedback message after 3 seconds
@@ -131,7 +133,8 @@ function App() {
   // Mark a flashcard as correct
   const markCorrect = (id) => {
     const card = flashcards.find(f => f.id === id);
-    setCorrectCards([...correctCards, card]); // Add to the correct cards list
+    // setCorrectCards([...correctCards, card]); // Add to the correct cards list
+    updateFlashcard(id, { ...card, GotWrong: false }); 
     setFeedbackMessage('Got it correct!');
     setTimeout(() => {
       setFeedbackMessage(''); 
@@ -152,20 +155,24 @@ function App() {
   };
 
   // Filter flashcards based on selected chapter and incorrect status
-  console.log(flashcards);
+
   const filteredFlashcards = flashcards.filter(flashcard =>
-    (!selectedChapter || flashcard.chapter === selectedChapter) &&
-    (!filter || flashcard.gotWrong)
+    (!selectedChapter || flashcard.Chapter === selectedChapter) &&
+    (!filter || flashcard.GotWrong)
   );
 
   // Function that will move to the next flashcard
   const goToNextCard = () => {
+    console.log('Current Index before update:', currentIndex); // Log before updating
     if (currentIndex < filteredFlashcards.length - 1) {
       setCurrentIndex(currentIndex + 1);
+      console.log('Current Index after update:', currentIndex + 1); // Log after updating
     } else {
-      setShowEndMessage(true); // Show end message indicating no more cards to review
+      setShowEndMessage(true);
+      console.log('No more flashcards to show.');
     }
   };
+  
 
   // Function to reset flashcard view to start
   const resetCards = () => {

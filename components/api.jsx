@@ -117,13 +117,16 @@ function App() {
   );
 
   const goToNextCard = () => {
+    console.log('Current Index before update:', currentIndex);
     if (currentIndex < filteredFlashcards.length - 1) {
       setCurrentIndex(currentIndex + 1);
+      console.log('Current Index after update:', currentIndex + 1);
     } else {
       setShowEndMessage(true);
+      console.log('No more flashcards to show.');
     }
   };
-
+  
   const resetCards = () => {
     setCurrentIndex(0);
     setShowEndMessage(false);
@@ -151,67 +154,33 @@ function App() {
   return (
     <Container className="mt-5">
       <h1>Flash Card Generator For {isAuthenticated ? user.name : ''}</h1>
-      <div className="auth-buttons">
-        {!isAuthenticated && (
-          <Button onClick={() => loginWithRedirect()}>Log In</Button>
-        )}
-        {isAuthenticated && (
-          <Button onClick={() => logout({ returnTo: window.location.origin })}>Log Out</Button>
+      {/* Other components and UI elements */}
+      <div className="flashcard-container">
+        {filteredFlashcards.length > 0 ? (
+          showEndMessage ? (
+            <div className="mt-5">
+              <h3>No more flashcards to review.</h3>
+              <Button variant="primary" onClick={handleReviewIncorrect} className="m-2">
+                Review Incorrect Cards
+              </Button>
+              <Button variant="secondary" onClick={handleRestart} className="m-2">
+                Restart
+              </Button>
+            </div>
+          ) : (
+            <>
+              <Flashcard
+                flashcard={filteredFlashcards[currentIndex]}
+                markIncorrect={markIncorrect}
+                markCorrect={markCorrect}
+              />
+              <p>Current Index: {currentIndex}</p> {/* Show the current index in the UI */}
+            </>
+          )
+        ) : (
+          <p>No flashcards available.</p>
         )}
       </div>
-      <Tabs defaultActiveKey="add" id="flashcard-tabs" className="mb-3">
-        <Tab eventKey="add" title="Add Flashcard">
-          <FlashcardForm addFlashcard={addFlashcard} chapters={chapters} />
-        </Tab>
-        <Tab eventKey="view" title="View Flashcards">
-          {reviewMessage && (
-            <Alert variant="warning" className="mt-3">
-              {reviewMessage}
-            </Alert>
-          )}
-          {feedbackMessage && (
-            <Alert variant="info" className="mt-3">
-              {feedbackMessage}
-            </Alert>
-          )}
-          <Form.Group controlId="chapterFilter" className="mt-3">
-            <Form.Label>Filter by Chapter</Form.Label>
-            <Form.Control as="select" value={selectedChapter} onChange={handleChapterChange}>
-              <option value="">All Chapters</option>
-              {chapters.map((chapter, index) => (
-                <option key={index} value={chapter}>{chapter}</option>
-              ))}
-            </Form.Control>
-          </Form.Group>
-          <Button variant={filter ? 'secondary' : 'primary'} className="mt-3" onClick={() => handleFilter(!filter)}>
-            {filter ? 'Show All Cards' : 'Show Incorrect Cards'}
-          </Button>
-          <h2 className="mt-4">Generated Flash Cards</h2>
-          <div className="flashcard-container">
-            {filteredFlashcards.length > 0 ? (
-              showEndMessage ? (
-                <div className="mt-5">
-                  <h3>No more flashcards to review.</h3>
-                  <Button variant="primary" onClick={handleReviewIncorrect} className="m-2">
-                    Review Incorrect Cards
-                  </Button>
-                  <Button variant="secondary" onClick={handleRestart} className="m-2">
-                    Restart
-                  </Button>
-                </div>
-              ) : (
-                <Flashcard
-                  flashcard={filteredFlashcards[currentIndex]}
-                  markIncorrect={markIncorrect}
-                  markCorrect={markCorrect}
-                />
-              )
-            ) : (
-              <p>No flashcards available.</p>
-            )}
-          </div>
-        </Tab>
-      </Tabs>
     </Container>
   );
 }

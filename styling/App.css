@@ -2,13 +2,23 @@ body {
   background-color: #C8D0D2;
 }
 
+.flashcard-container {
+  display: flex;
+  flex-direction: column; /* Change to 'row' if you want them side by side */
+  gap: 20px; /* Space between the cards */
+}
+
 .card {
   height: 150px;
   width: 150px;
   text-align: center;
   transform-style: preserve-3d;
   transition: transform 0.6s;
+  margin-bottom: 20px;
+  background-color: lightblue; /* Temporary background color for visibility */
+  border: 1px solid red; /* Temporary border for visibility */
 }
+
 
 .card.flip {
   transform: rotateY(180deg);
